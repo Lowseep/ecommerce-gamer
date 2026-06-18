@@ -1,0 +1,371 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   FSOCIETY - CSS GLOBAL
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   1. VARIABLES Y COLORES
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+    --primary-bg: #0a0a0f;
+    --secondary-bg: #0d0d1a;
+    --tertiary-bg: #1a1a2e;
+    --cyan-primary: #00d4ff;
+    --cyan-secondary: #0099cc;
+    --cyan-dark: #006699;
+    --text-primary: #ffffff;
+    --text-secondary: #999999;
+    --border-light: rgba(0, 212, 255, 0.15);
+    --border-dark: rgba(0, 212, 255, 0.3);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   2. ESTILOS GENERALES
+   ───────────────────────────────────────────────────────────────────────────── */
+body {
+    background-color: var(--primary-bg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   3. BOTONES
+   ───────────────────────────────────────────────────────────────────────────── */
+.btn-gamer {
+    background: linear-gradient(135deg, var(--cyan-primary), var(--cyan-secondary));
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    border-radius: 0.5rem;
+}
+
+.btn-gamer:hover {
+    background: linear-gradient(135deg, var(--cyan-secondary), var(--cyan-dark));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+}
+
+.btn-gamer:active {
+    transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   4. TEXTOS Y EFECTOS
+   ───────────────────────────────────────────────────────────────────────────── */
+.neon-text {
+    text-shadow: 0 0 10px var(--cyan-primary), 0 0 20px var(--cyan-primary);
+}
+
+.neon-text-sm {
+    text-shadow: 0 0 8px var(--cyan-primary);
+}
+
+.glow-cyan {
+    text-shadow: 0 0 10px var(--cyan-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   5. TARJETAS Y CONTENEDORES
+   ───────────────────────────────────────────────────────────────────────────── */
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+}
+
+.card-gamer {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 153, 204, 0.05));
+    border: 1px solid var(--border-light);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.card-gamer:hover {
+    border-color: var(--border-dark);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   6. INPUTS Y FORMULARIOS
+   ───────────────────────────────────────────────────────────────────────────── */
+.search-input:focus {
+    box-shadow: 0 0 0 2px var(--border-dark);
+    border-color: var(--cyan-primary);
+}
+
+.form-input {
+    background-color: #1a1a2e;
+    border: 1px solid #333333;
+    color: var(--text-primary);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    border-color: var(--cyan-primary);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+    outline: none;
+}
+
+.form-input-error {
+    border-color: #ef4444 !important;
+}
+
+.form-input-valid {
+    border-color: #10b981 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   7. NAVEGACIÓN
+   ───────────────────────────────────────────────────────────────────────────── */
+.main-nav {
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--cyan-primary);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--cyan-primary);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   8. FOOTER
+   ───────────────────────────────────────────────────────────────────────────── */
+.footer-main {
+    background: var(--secondary-bg);
+    border-top: 1px solid var(--border-light);
+    margin-top: 4rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   9. ALERTAS Y NOTIFICACIONES
+   ───────────────────────────────────────────────────────────────────────────── */
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid #10b981;
+    color: #86efac;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.alert-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.alert-warning {
+    background-color: rgba(234, 179, 8, 0.1);
+    border: 1px solid #eab308;
+    color: #facc15;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.alert-info {
+    background-color: rgba(59, 130, 246, 0.1);
+    border: 1px solid #3b82f6;
+    color: #93c5fd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   10. VALIDACIÓN DE CAMPOS
+   ───────────────────────────────────────────────────────────────────────────── */
+.field-error {
+    border-color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+.field-valid {
+    border-color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.05);
+}
+
+.error-message {
+    color: #fca5a5;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.success-message {
+    color: #86efac;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   11. BARRAS DE PROGRESO
+   ───────────────────────────────────────────────────────────────────────────── */
+.progress-bar {
+    background-color: #333333;
+    border-radius: 9999px;
+    height: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background: linear-gradient(90deg, var(--cyan-primary), var(--cyan-secondary));
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+}
+
+.progress-bar-cpu {
+    background-color: var(--cyan-primary);
+}
+
+.progress-bar-ram {
+    background-color: #a78bfa;
+}
+
+.progress-bar-disk {
+    background-color: #10b981;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   12. TRANSICIONES Y ANIMACIONES
+   ───────────────────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-in {
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   13. UTILIDADES
+   ───────────────────────────────────────────────────────────────────────────── */
+.truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+}
+
+.shadow-gamer {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   14. RESPONSIVE
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .card-hover {
+        transform: none;
+    }
+
+    .card-hover:hover {
+        box-shadow: none;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   15. ADMIN - SIDEBAR
+   ───────────────────────────────────────────────────────────────────────────── */
+.sidebar-link {
+    transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-left: 3px solid var(--cyan-primary);
+}
+
+.sidebar-link.active {
+    background: rgba(0, 212, 255, 0.15);
+    border-left: 3px solid var(--cyan-primary);
+    color: var(--cyan-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   16. RESPONSIVE - PREVENCIÓN DE DESBORDE HORIZONTAL
+   ───────────────────────────────────────────────────────────────────────────── */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+@media (max-width: 480px) {
+    .neon-text {
+        text-shadow: 0 0 6px var(--cyan-primary);
+    }
+}
