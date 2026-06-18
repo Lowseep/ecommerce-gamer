@@ -1,0 +1,57 @@
+services:
+
+  # ── Servidor 1: Aplicación (Laravel + Nginx + PHP-FPM) ──────
+  app:
+    image: ecommerce-app
+    container_name: ecommerce_app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      APP_URL: http://192.168.18.231:8080
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_DATABASE: ecommerce_gamer
+      DB_USERNAME: gamer
+      DB_PASSWORD: gamer123
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - mariadb
+      - redis
+    networks:
+      - ecommerce_network
+
+  # ── Servidor 2: Base de datos (MariaDB) ──────────────────────
+  mariadb:
+    image: mariadb:11.8
+    container_name: ecommerce_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ecommerce_gamer
+      MYSQL_USER: gamer
+      MYSQL_PASSWORD: gamer123
+      MYSQL_ROOT_PASSWORD: root_password_aqui
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - ecommerce_network
+
+  # ── Redis (sesiones, colas, caché) ───────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - ecommerce_network
+
+networks:
+  ecommerce_network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+  redis_data:
