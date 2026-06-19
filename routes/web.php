@@ -14,8 +14,8 @@ Route::get('/',                [App\Http\Controllers\TiendaController::class, 'i
 Route::get('/producto/{slug}', [App\Http\Controllers\TiendaController::class, 'show'])->name('tienda.producto');
 Route::get('/categoria/{slug}',[App\Http\Controllers\TiendaController::class, 'categoria'])->name('tienda.categoria');
 
-// ─── RUTAS PRIVADAS (requieren login) ─────────────────────────────────────────
-Route::middleware('auth')->group(function () {
+// ─── RUTAS DE CLIENTE (requieren login + rol cliente) ─────────────────────────
+Route::middleware('cliente')->group(function () {
 
     // Carrito
     Route::get('/carrito',          [App\Http\Controllers\CarritoController::class, 'index'])->name('carrito.index');
