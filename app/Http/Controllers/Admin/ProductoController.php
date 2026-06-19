@@ -10,21 +10,18 @@ use App\Models\Categoria;
 
 class ProductoController extends Controller
 {
-    // Lista de productos
     public function index()
     {
         $productos = Producto::with('categoria')->latest()->paginate(5);
         return view('admin.productos.index', compact('productos'));
     }
 
-    // Formulario crear
     public function crear()
     {
         $categorias = Categoria::all();
         return view('admin.productos.crear', compact('categorias'));
     }
 
-    // Guardar producto nuevo
     public function guardar(Request $request)
     {
         $request->validate([
@@ -45,8 +42,7 @@ class ProductoController extends Controller
 
         $imagenPath = null;
         if ($request->hasFile('imagen')) {
-            $imagenPath = $request->file('imagen')
-                ->store('productos', 'public');
+            $imagenPath = $request->file('imagen')->store('productos', 'public');
         }
 
         Producto::create([
@@ -64,7 +60,6 @@ class ProductoController extends Controller
             ->with('success', 'Producto creado correctamente.');
     }
 
-    // Formulario editar
     public function editar($id)
     {
         $producto   = Producto::findOrFail($id);
@@ -72,24 +67,22 @@ class ProductoController extends Controller
         return view('admin.productos.editar', compact('producto', 'categorias'));
     }
 
-    // Actualizar producto
     public function actualizar(Request $request, $id)
     {
         $producto = Producto::findOrFail($id);
 
         $request->validate([
-            'nombre'        => 'required|string|max:255',
-            'categoria_id'  => 'required|exists:categorias,id',
-            'descripcion'   => 'required|string',
-            'precio'        => 'required|numeric|min:0',
-            'stock'         => 'required|integer|min:0',
-            'imagen'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'nombre'       => 'required|string|max:255',
+            'categoria_id' => 'required|exists:categorias,id',
+            'descripcion'  => 'required|string',
+            'precio'       => 'required|numeric|min:0',
+            'stock'        => 'required|integer|min:0',
+            'imagen'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $imagenPath = $producto->imagen;
         if ($request->hasFile('imagen')) {
-            $imagenPath = $request->file('imagen')
-                ->store('productos', 'public');
+            $imagenPath = $request->file('imagen')->store('productos', 'public');
         }
 
         $producto->update([
@@ -106,13 +99,27 @@ class ProductoController extends Controller
             ->with('success', 'Producto actualizado correctamente.');
     }
 
-    // Eliminar producto
     public function eliminar($id)
     {
         $producto = Producto::findOrFail($id);
+
+        // Verificar si tiene pedidos activos (pendiente, procesando, confirmado, enviado)
+        $pedidosActivos = $producto->detallesPedido()
+            ->whereHas('pedido', function ($q) {
+                $q->whereNotIn('estado', ['entregado', 'cancelado']);
+            })->count();
+
+        if ($pedidosActivos > 0) {
+            return redirect()->route('admin.productos.index')
+                ->with('error', 'No se puede eliminar "' . $producto->nombre . '" porque tiene pedidos activos asociados.');
+        }
+
+        // Eliminar detalles de pedidos entregados/cancelados antes de borrar el producto
+        $producto->detallesPedido()->delete();
+
         $producto->delete();
 
         return redirect()->route('admin.productos.index')
-            ->with('success', 'Producto eliminado correctamente.');
+            ->with('success', 'Producto "' . $producto->nombre . '" eliminado correctamente.');
     }
 }

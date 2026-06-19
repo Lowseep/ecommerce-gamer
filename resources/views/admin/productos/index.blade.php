@@ -4,6 +4,18 @@
 
 @section('contenido')
 
+{{-- Mensajes --}}
+@if(session('success'))
+    <div class="mb-4 flex items-center gap-3 bg-green-900 bg-opacity-40 border border-green-700 text-green-400 px-4 py-3 rounded-xl text-sm">
+        <i class="fas fa-check-circle"></i> {{ session('success') }}
+    </div>
+@endif
+@if(session('error'))
+    <div class="mb-4 flex items-center gap-3 bg-red-900 bg-opacity-40 border border-red-700 text-red-400 px-4 py-3 rounded-xl text-sm">
+        <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+    </div>
+@endif
+
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
     <div>
         <h2 class="text-white font-bold text-lg flex items-center gap-2">
@@ -19,7 +31,7 @@
 
 <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
 
-    <!-- Vista TABLA (solo desktop, md+) -->
+    <!-- Vista TABLA (desktop) -->
     <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-800 border-b border-gray-700">
@@ -35,15 +47,11 @@
             <tbody class="divide-y divide-gray-800">
                 @forelse($productos as $producto)
                     <tr class="text-gray-300 hover:bg-gray-800 transition">
-
-                        <!-- ID -->
                         <td class="px-4 py-3 text-center">
                             <span class="text-gray-500 font-mono text-xs bg-gray-800 px-2 py-1 rounded-lg">
                                 #{{ $producto->id }}
                             </span>
                         </td>
-
-                        <!-- Producto -->
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-3">
                                 @if($producto->imagen && Storage::disk('public')->exists($producto->imagen))
@@ -60,22 +68,16 @@
                                 </div>
                             </div>
                         </td>
-
-                        <!-- Categoría -->
                         <td class="px-4 py-3">
                             <span class="text-xs px-2.5 py-1 bg-gray-800 border border-gray-700 text-gray-300 rounded-lg">
                                 {{ $producto->categoria->nombre }}
                             </span>
                         </td>
-
-                        <!-- Precio -->
                         <td class="px-4 py-3 text-center">
                             <span class="text-cyan-400 font-bold text-sm">
                                 S/ {{ number_format($producto->precio, 2) }}
                             </span>
                         </td>
-
-                        <!-- Stock -->
                         <td class="px-4 py-3 text-center">
                             @if($producto->stock > 10)
                                 <span class="text-xs px-2.5 py-1 bg-green-900 bg-opacity-50 border border-green-800 text-green-400 rounded-lg">
@@ -91,24 +93,17 @@
                                 </span>
                             @endif
                         </td>
-
-                        <!-- Acciones -->
                         <td class="px-4 py-3">
                             <div class="flex items-center justify-center gap-2">
                                 <a href="{{ route('admin.productos.editar', $producto->id) }}"
                                    class="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-blue-900 bg-opacity-40 border border-blue-700 text-blue-400 hover:bg-blue-800 rounded-lg transition">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
-                                <form action="{{ route('admin.productos.eliminar', $producto->id) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('¿Eliminar este producto?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-red-900 bg-opacity-40 border border-red-700 text-red-400 hover:bg-red-800 rounded-lg transition">
-                                        <i class="fas fa-trash"></i> Eliminar
-                                    </button>
-                                </form>
+                                <button type="button"
+                                    onclick="abrirModal({{ $producto->id }}, '{{ addslashes($producto->nombre) }}')"
+                                    class="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-red-900 bg-opacity-40 border border-red-700 text-red-400 hover:bg-red-800 rounded-lg transition">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -128,7 +123,7 @@
         </table>
     </div>
 
-    <!-- Vista TARJETAS (solo móvil) -->
+    <!-- Vista TARJETAS (móvil) -->
     <div class="md:hidden">
         @forelse($productos as $producto)
             <div class="border-b border-gray-800 p-4 last:border-0">
@@ -151,7 +146,6 @@
                         <p class="font-medium text-white text-sm mt-1 truncate">{{ $producto->nombre }}</p>
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-cyan-400 font-bold text-base">
                         S/ {{ number_format($producto->precio, 2) }}
@@ -170,23 +164,16 @@
                         </span>
                     @endif
                 </div>
-
                 <div class="flex items-center gap-2">
                     <a href="{{ route('admin.productos.editar', $producto->id) }}"
                        class="flex-1 flex items-center justify-center gap-1.5 text-xs px-3 py-2 bg-blue-900 bg-opacity-40 border border-blue-700 text-blue-400 hover:bg-blue-800 rounded-lg transition">
                         <i class="fas fa-edit"></i> Editar
                     </a>
-                    <form action="{{ route('admin.productos.eliminar', $producto->id) }}"
-                          method="POST"
-                          onsubmit="return confirm('¿Eliminar este producto?')"
-                          class="flex-1">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                            class="w-full flex items-center justify-center gap-1.5 text-xs px-3 py-2 bg-red-900 bg-opacity-40 border border-red-700 text-red-400 hover:bg-red-800 rounded-lg transition">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </button>
-                    </form>
+                    <button type="button"
+                        onclick="abrirModal({{ $producto->id }}, '{{ addslashes($producto->nombre) }}')"
+                        class="flex-1 flex items-center justify-center gap-1.5 text-xs px-3 py-2 bg-red-900 bg-opacity-40 border border-red-700 text-red-400 hover:bg-red-800 rounded-lg transition">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
                 </div>
             </div>
         @empty
@@ -207,5 +194,48 @@
         </div>
     @endif
 </div>
+
+{{-- Modal confirmación eliminar --}}
+<div id="modalEliminar" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm" onclick="cerrarModal()"></div>
+    <div class="relative bg-gray-900 border border-gray-700 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+        <div class="flex flex-col items-center text-center gap-3">
+            <div class="w-14 h-14 bg-red-900 bg-opacity-40 border border-red-700 rounded-full flex items-center justify-center">
+                <i class="fas fa-trash text-red-400 text-xl"></i>
+            </div>
+            <h3 class="text-white font-bold text-lg">¿Eliminar producto?</h3>
+            <p class="text-gray-400 text-sm">Estás a punto de eliminar <span id="modalNombreProducto" class="text-white font-semibold"></span>. Esta acción no se puede deshacer.</p>
+        </div>
+        <div class="flex gap-3 mt-6">
+            <button onclick="cerrarModal()"
+                class="flex-1 px-4 py-2.5 bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 rounded-xl text-sm font-medium transition">
+                Cancelar
+            </button>
+            <form id="formEliminar" method="POST" class="flex-1">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    class="w-full px-4 py-2.5 bg-red-700 hover:bg-red-600 text-white rounded-xl text-sm font-semibold transition">
+                    Sí, eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function abrirModal(id, nombre) {
+    document.getElementById('modalNombreProducto').textContent = nombre;
+    document.getElementById('formEliminar').action = '{{ url('/admin/productos') }}/' + id;
+    const modal = document.getElementById('modalEliminar');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+function cerrarModal() {
+    const modal = document.getElementById('modalEliminar');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+</script>
 
 @endsection
