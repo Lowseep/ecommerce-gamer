@@ -46,7 +46,7 @@
                         <!-- Producto -->
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-3">
-                                @if($producto->imagen)
+                                @if($producto->imagen && Storage::disk('public')->exists($producto->imagen))
                                     <img src="{{ asset('storage/' . $producto->imagen) }}"
                                          class="w-11 h-11 object-cover rounded-xl border border-gray-700 flex-shrink-0">
                                 @else
@@ -133,7 +133,7 @@
         @forelse($productos as $producto)
             <div class="border-b border-gray-800 p-4 last:border-0">
                 <div class="flex items-center gap-3 mb-3">
-                    @if($producto->imagen)
+                    @if($producto->imagen && Storage::disk('public')->exists($producto->imagen))
                         <img src="{{ asset('storage/' . $producto->imagen) }}"
                              class="w-14 h-14 object-cover rounded-xl border border-gray-700 flex-shrink-0">
                     @else

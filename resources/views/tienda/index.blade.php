@@ -160,7 +160,7 @@
             <!-- Imagen -->
             <a href="{{ route('tienda.producto', $producto->slug) }}" class="block relative overflow-hidden"
                style="aspect-ratio:1/1;">
-                @if($producto->imagen)
+                @if($producto->imagen && Storage::disk('public')->exists($producto->imagen))
                     <img src="{{ asset('storage/' . $producto->imagen) }}"
                          alt="{{ $producto->nombre }}"
                          class="w-full h-full object-cover hover:scale-105 transition duration-300">
@@ -192,7 +192,7 @@
                         {{ $producto->nombre }}
                     </a>
                 </h3>
-                <p class="text-gray-500 text-xs leading-relaxed mb-2 line-clamp-2 hidden sm:block">
+                <p class="text-gray-500 text-xs leading-relaxed mb-2 hidden sm:block" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                     {{ $producto->descripcion }}
                 </p>
 

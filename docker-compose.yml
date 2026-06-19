@@ -19,6 +19,8 @@ services:
     depends_on:
       - mariadb
       - redis
+    volumes:
+      - storage_data:/var/www/html/storage/app/public
     networks:
       - ecommerce_network
 
@@ -55,3 +57,4 @@ networks:
 volumes:
   mariadb_data:
   redis_data:
+  storage_data:

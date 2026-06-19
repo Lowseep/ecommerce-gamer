@@ -19,7 +19,7 @@
 
     <!-- Imagen -->
     <div>
-        @if($producto->imagen)
+        @if($producto->imagen && Storage::disk('public')->exists($producto->imagen))
             <img src="{{ asset('storage/' . $producto->imagen) }}"
                  alt="{{ $producto->nombre }}"
                  class="w-full rounded-xl object-cover max-h-72 md:max-h-96">
@@ -107,7 +107,7 @@
             @foreach($relacionados as $rel)
                 <div class="card-hover bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
                     <a href="{{ route('tienda.producto', $rel->slug) }}">
-                        @if($rel->imagen)
+                        @if($rel->imagen && Storage::disk('public')->exists($rel->imagen))
                             <img src="{{ asset('storage/' . $rel->imagen) }}"
                                  alt="{{ $rel->nombre }}"
                                  class="w-full h-28 md:h-36 object-cover">
